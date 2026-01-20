@@ -54,7 +54,7 @@ class CounterOpen extends HTMLElement {
             <div>
                 <button id='decrement-btn'>-</button>
                 <span id='value'>${this.getAttribute('value')}</span>
-                <button id='increment-btn'}>+</button>
+                <button id='increment-btn'>+</button>
             </div>
         `
     }
