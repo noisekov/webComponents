@@ -1,0 +1,102 @@
+.checkbox-ya {
+	display: inline-block;    
+	height: 28px;    
+	line-height: 28px;  
+	margin-right: 10px;      
+	position: relative;
+	vertical-align: middle;
+	user-select: none;
+}
+.checkbox-ya .checkbox-ya-switch {
+	display: inline-block;
+	box-sizing: border-box;	
+	width: 76px;
+	height: 28px;	
+	margin: 0 auto;
+	position: relative;	
+	background: linear-gradient(90deg, #FFEB9D 0%, #FFEB9D 50%, #e8e9e9 50%, #e8e9e9 200%);
+	background-position: -72px 0;
+	background-size: 200% 100%;
+	border: 1px solid #bababb;
+	border-radius: 3px;
+	font-size: 13px;
+	color: #000;
+	transition: all 150ms ease-in;	
+}
+.checkbox-ya .checkbox-ya-switch:before {
+	content: '';
+	display: block;
+	box-sizing: border-box;	
+	width: 28px;
+	height: 28px;	
+	position: absolute;
+	top: 50%;
+	left: -1px;
+	text-indent: -100%;
+	background-color: #fff;    
+	border: 1px solid rgba(0,0,0,.2);
+	border-radius: 3px;
+	transform: translateY(-50%);
+	transition: all 150ms ease-in;
+}
+.checkbox-ya .checkbox-ya-feature {
+	position: relative;
+	display: block;
+	height: 28px;
+	line-height: 28px;	
+	overflow: hidden;
+}
+.checkbox-ya .checkbox-ya-feature:before, .checkbox-ya .checkbox-ya-feature:after {
+	content: '';
+	display: block;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	transition: all 150ms ease-in;
+}
+.checkbox-ya .checkbox-ya-feature:before {
+	content: attr(data-label-on);
+	left: -60%;
+}
+.checkbox-ya .checkbox-ya-feature:after {
+	content: attr(data-label-off);
+	right: 8px;
+}
+.checkbox-ya input[type=checkbox] {
+	display: block;	
+	width: 0;
+	height: 0;	
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+.checkbox-ya input[type=checkbox]:checked + .checkbox-ya-switch {
+	background-position: 0 0;
+	border-color: rgba(153,122,0,.5);
+}
+.checkbox-ya input[type=checkbox]:checked + .checkbox-ya-switch:before {
+	left: calc(100% - 27px);
+}
+.checkbox-ya input[type=checkbox]:checked + .checkbox-ya-switch .checkbox-ya-feature:before {
+	left: 13px;
+}
+.checkbox-ya input[type=checkbox]:checked + .checkbox-ya-switch .checkbox-ya-feature:after {
+	right: -60%;
+}
+.checkbox-ya input[type=checkbox]:not(:disabled) + .checkbox-ya-switch:hover:before {
+	border-color: rgba(0,0,0,.6);
+}
+.checkbox-ya input[type=checkbox]:not(:disabled) + .checkbox-ya-switch:hover {
+	cursor: pointer;
+}
+.checkbox-ya input[type=checkbox]:disabled + .checkbox-ya-switch {
+	border-color: rgba(0, 0, 0, .1);	
+	filter: grayscale(70%);
+}
+.checkbox-ya input[type=checkbox]:disabled + .checkbox-ya-switch .checkbox-ya-feature {
+	color: #999;
+}
+.checkbox-ya.focused .checkbox-ya-switch:before {
+	border-width: 2px;
+	border-color: #ffdb4d;
+}

@@ -6,8 +6,13 @@ class CounterOpen extends HTMLElement {
 
     connectedCallback() {
         if (!this.rendered) {
+            const stylesheet = [...document.styleSheets].find((styleSheet) => styleSheet.href?.split('/').pop() === 'counter.css');
+            const stylesheetText = [...stylesheet.cssRules].reduce((accumulator, rule) => accumulator + rule.cssText, '');
             const shadow = this.attachShadow({mode: 'open'});
             shadow.innerHTML = this.render()
+            const myStyles = new CSSStyleSheet();
+            myStyles.replace(stylesheetText);
+            shadow.adoptedStyleSheets = [myStyles];
             this.rendered = true;
 
             this.decrementBtn = this.shadowRoot.getElementById('decrement-btn')
@@ -51,11 +56,12 @@ class CounterOpen extends HTMLElement {
 
     render() {
         return `
-            <div>
+            <label>
+                Счетчик
                 <button id='decrement-btn'>-</button>
                 <span id='value'>${this.getAttribute('value')}</span>
                 <button id='increment-btn'>+</button>
-            </div>
+            </label>
         `
     }
 }
@@ -69,23 +75,32 @@ class CounterClosed extends HTMLElement {
 
     connectedCallback() {
         if (!this.rendered) {
+            const stylesheet = [...document.styleSheets].find((styleSheet) => styleSheet.href?.split('/').pop() === 'counter.css');
+            const stylesheetText = [...stylesheet.cssRules].reduce((accumulator, rule) => accumulator + rule.cssText, '');
             const shadow = this.attachShadow({mode: 'closed'});
             shadow.innerHTML = this.render()
+            const myStyles = new CSSStyleSheet();
+            myStyles.replace(stylesheetText);
+            shadow.adoptedStyleSheets = [myStyles];
             this.rendered = true;
-            
+
+            this.label = document.createElement('label')
+            this.label.innerText = 'Счетчик'
+            shadow.appendChild(this.label)
+
             this.decrementBtn = document.createElement('button')
             this.decrementBtn.innerHTML = '-'
             this.decrementBtn.addEventListener('click', () => this.handleChangeValue('dec'))
-            shadow.appendChild(this.decrementBtn)
+            this.label.appendChild(this.decrementBtn)
 
             this.value = document.createElement('span')
             this.value.innerHTML = this.getAttribute('value')
-            shadow.appendChild(this.value)
+            this.label.appendChild(this.value)
 
             this.incrementBtn = document.createElement('button')
             this.incrementBtn.innerHTML = '+'
             this.incrementBtn.addEventListener('click', () => this.handleChangeValue("inc"))
-            shadow.appendChild(this.incrementBtn)
+            this.label.appendChild(this.incrementBtn)
         }
     }
 

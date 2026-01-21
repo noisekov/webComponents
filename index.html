@@ -5,23 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/normalize.css">
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/components/toggle-switch/toggle-switch.css">
+    <link rel="stylesheet" href="/components/counter/counter.css">
     <title>WebComponents</title>
 </head>
-    <body>
-        <div>
-            <counter-open value="0" min="-2" max="5"></counter-open>
-            <br>
-            <counter-closed value="5" min="2" max="7"></counter-closed>
-            <br>
-            <counter-closed value="11" min="0" max="13"></counter-closed>
+    <body class="body">
+        <div class="wrapper">
+            <div class="counters">
+                <counter-open value="0" min="-2" max="5"></counter-open>
+                <counter-closed value="5" min="2" max="7"></counter-closed>
+                <counter-closed value="11" min="0" max="13"></counter-closed>
+            </div>
+            <toggle-controlled-counter
+                label="Дополнительные экземпляры"
+                enabled-label="Добавить экземпляры"
+                disabled-label="Без дополнительных"
+                counter-label="Количество:"
+                min="0"
+                max="5"
+                value="1">
+                <toggle-switch slot="toggle"></toggle-switch>
+                <counter-closed slot="counter"></counter-closed>
+            </toggle-controlled-counter>
         </div>
-        <!-- <div>
-            <form id="my-form">
-                <toggle-switch name="notifications" checked>Уведомления</toggle-switch>
-                <button type="submit">Отправить</button>
-            </form>
-        </div> -->
-        <script src="/counter.js"></script>
-        <script src="/toggle-switch.js"></script>
+        <script src="/components/counter/counter.js"></script>
+        <script src="/components/toggle-switch/toggle-switch.js"></script>
     </body>
 </html>
