@@ -85,7 +85,9 @@ class CounterClosed extends HTMLElement {
             this.rendered = true;
 
             this.label = document.createElement('label')
-            this.label.innerText = 'Счетчик'
+            this.labelName = document.createElement('span')
+            this.labelName.innerText = 'Счетчик'
+            this.label.appendChild(this.labelName)
             shadow.appendChild(this.label)
 
             this.decrementBtn = document.createElement('button')
@@ -128,11 +130,17 @@ class CounterClosed extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ["value"];
+        return ["value", "counter-label"];
     }
 
-    attributeChangedCallback() {
-       this.render();
+    attributeChangedCallback(name) {
+        if (name === 'value' && this.value) { 
+            this.value.innerHTML = this.getAttribute('value')
+        }
+
+        if (name === 'counter-label' && this.labelName) { 
+            this.labelName.innerText = this.getAttribute('counter-label')
+        }
     }
 
     render() {
