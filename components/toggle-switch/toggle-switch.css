@@ -1,5 +1,6 @@
 .checkbox-ya {
-	display: inline-block;    
+	display: flex;
+    gap: 10px;   
 	height: 28px;    
 	line-height: 28px;  
 	margin-right: 10px;      

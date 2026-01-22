@@ -3,46 +3,61 @@ class ToggleControlledCounter extends HTMLElement {
         super()
     }
 
+    grabStyles() {
+        const stylesheet = [...document.styleSheets].find((styleSheet) => styleSheet.href?.split('/').pop() === 'toggle-controlled-counter.css');
+        const stylesheetText = [...stylesheet.cssRules].reduce((accumulator, rule) => accumulator + rule.cssText, '');
+        
+        return stylesheetText;
+    }
+
+    setStyles(shadow) {
+        const myStyles = new CSSStyleSheet();
+        myStyles.replace(this.grabStyles());
+        shadow.adoptedStyleSheets = [myStyles];
+    }
+
     connectedCallback() {
          if (!this.rendered) {
-            const stylesheet = [...document.styleSheets].find((styleSheet) => styleSheet.href?.split('/').pop() === 'toggle-controlled-counter.css');
-            const stylesheetText = [...stylesheet.cssRules].reduce((accumulator, rule) => accumulator + rule.cssText, '');
             const shadow = this.attachShadow({mode: 'closed'});
-            shadow.innerHTML = this.render()
+
+
+            this.wrap = document.createElement('div')
+            this.wrap.classList = 'wrap'
+            shadow.appendChild(this.wrap)
+
+            this.titleSpan = document.createElement('span')
+            this.titleSpan.innerText = this.getAttribute('label')
+            this.wrap.appendChild(this.titleSpan)
 
             this.toggleSlot = document.createElement('slot')
             this.toggleSlot.setAttribute('name', 'toggle')
-            shadow.appendChild(this.toggleSlot)
+            this.wrap.appendChild(this.toggleSlot)
 
             this.toggleCounter = document.createElement('slot')
             this.toggleCounter.setAttribute('name', 'counter')
-            shadow.appendChild(this.toggleCounter)
-
-            const myStyles = new CSSStyleSheet();
-            myStyles.replace(stylesheetText);
-            shadow.adoptedStyleSheets = [myStyles];
+            this.wrap.appendChild(this.toggleCounter)
+            this.setStyles(shadow)
             this.rendered = true;
             
             this.toggleSlot.addEventListener('slotchange', () => {
-                const toggle = this.toggleSlot.assignedElements()[0];
-                const counter = this.toggleCounter.assignedElements()[0];
+                const [toggle] = this.toggleSlot.assignedElements();
+                const [counter] = this.toggleCounter.assignedElements();
+                const counterAttributes = ['value', 'min', 'max', 'counter-label']
+                const toggleAttributes = ['enabled-label', 'disabled-label']
                 
                 if (counter) {
-                    counter.setAttribute('value', this.getAttribute('value'))
-                    counter.setAttribute('min', this.getAttribute('min'))
-                    counter.setAttribute('max', this.getAttribute('max'))
-                    counter.setAttribute('counter-label', this.getAttribute('counter-label'))
+                    counterAttributes.forEach(attribut => counter.setAttribute(attribut, this.getAttribute(attribut)))
                 }
 
-                toggle.addEventListener('change', () => {
-                    console.log('changed')
-                });
+                if (toggle) {
+                    toggleAttributes.forEach(attribut => toggle.setAttribute(attribut, this.getAttribute(attribut)))
+                    
+                    toggle.addEventListener('change', (evt) => {
+                        counter.style.display = evt.detail.checked ?  'block' : 'none';
+                    });
+                }
             });
         }
-     }
-
-     render() {
-        return ``
      }
 }
 

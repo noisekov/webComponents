@@ -2,3 +2,12 @@ label {
     display: flex;
     flex-direction: column;
 }
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    width: 40px;
+    height: 20px;
+}

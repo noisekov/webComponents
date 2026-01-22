@@ -4,15 +4,24 @@ class CounterOpen extends HTMLElement {
         super();
     }
 
+    grabStyles() {
+        const stylesheet = [...document.styleSheets].find((styleSheet) => styleSheet.href?.split('/').pop() === 'counter.css');
+        const stylesheetText = [...stylesheet.cssRules].reduce((accumulator, rule) => accumulator + rule.cssText, '');
+        
+        return stylesheetText;
+    }
+
+    setStyles(shadow) {
+        const myStyles = new CSSStyleSheet();
+        myStyles.replace(this.grabStyles());
+        shadow.adoptedStyleSheets = [myStyles];
+    }
+
     connectedCallback() {
         if (!this.rendered) {
-            const stylesheet = [...document.styleSheets].find((styleSheet) => styleSheet.href?.split('/').pop() === 'counter.css');
-            const stylesheetText = [...stylesheet.cssRules].reduce((accumulator, rule) => accumulator + rule.cssText, '');
             const shadow = this.attachShadow({mode: 'open'});
             shadow.innerHTML = this.render()
-            const myStyles = new CSSStyleSheet();
-            myStyles.replace(stylesheetText);
-            shadow.adoptedStyleSheets = [myStyles];
+            this.setStyles(shadow)
             this.rendered = true;
 
             this.decrementBtn = this.shadowRoot.getElementById('decrement-btn')
@@ -73,15 +82,23 @@ class CounterClosed extends HTMLElement {
         super();
     }
 
+    grabStyles() {
+        const stylesheet = [...document.styleSheets].find((styleSheet) => styleSheet.href?.split('/').pop() === 'counter.css');
+        const stylesheetText = [...stylesheet.cssRules].reduce((accumulator, rule) => accumulator + rule.cssText, '');
+        
+        return stylesheetText;
+    }
+
+    setStyles(shadow) {
+        const myStyles = new CSSStyleSheet();
+        myStyles.replace(this.grabStyles());
+        shadow.adoptedStyleSheets = [myStyles];
+    }
+
     connectedCallback() {
         if (!this.rendered) {
-            const stylesheet = [...document.styleSheets].find((styleSheet) => styleSheet.href?.split('/').pop() === 'counter.css');
-            const stylesheetText = [...stylesheet.cssRules].reduce((accumulator, rule) => accumulator + rule.cssText, '');
             const shadow = this.attachShadow({mode: 'closed'});
-            shadow.innerHTML = this.render()
-            const myStyles = new CSSStyleSheet();
-            myStyles.replace(stylesheetText);
-            shadow.adoptedStyleSheets = [myStyles];
+            this.setStyles(shadow)
             this.rendered = true;
 
             this.label = document.createElement('label')
@@ -141,10 +158,6 @@ class CounterClosed extends HTMLElement {
         if (name === 'counter-label' && this.labelName) { 
             this.labelName.innerText = this.getAttribute('counter-label')
         }
-    }
-
-    render() {
-        return ``
     }
 }
 
